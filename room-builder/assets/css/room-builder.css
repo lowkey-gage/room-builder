@@ -1,0 +1,468 @@
+.room-builder {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 1.5rem 0;
+    color: #2c2a26;
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.room-builder *,
+.room-builder *::before,
+.room-builder *::after {
+    box-sizing: inherit;
+}
+
+.room-builder__fallback {
+    margin: 0;
+    color: #667085;
+}
+
+.room-builder__app {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid #e0d6c8;
+    border-radius: 12px;
+    background: #f7f3ec;
+}
+
+.room-builder__toolbar,
+.room-builder__shapes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.room-builder__shapes-label {
+    color: #3f3a34;
+    font-size: 0.92rem;
+}
+
+.room-builder h2,
+.room-builder h3 {
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-weight: 650;
+    letter-spacing: 0;
+}
+
+.room-builder h2 {
+    margin-right: 6px;
+    font-size: 1.2rem;
+    line-height: 1.2;
+}
+
+.room-builder h3 {
+    font-size: 0.95rem;
+}
+
+.room-builder__field {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #3f3a34;
+    font-size: 0.92rem;
+}
+
+.room-builder input[type="number"] {
+    width: 4.6rem;
+    margin: 0;
+    padding: 6px 8px;
+    border: 1px solid #cfc6b8;
+    border-radius: 6px;
+    background: #fffdf9;
+    color: #2c2a26;
+    font: inherit;
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.room-builder__button,
+.room-builder__piece {
+    margin: 0;
+    border: 1px solid #cfc6b8;
+    border-radius: 6px;
+    background: #fffdf9;
+    color: #2c2a26;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.room-builder__button {
+    padding: 7px 10px;
+}
+
+.room-builder__button:hover,
+.room-builder__piece:hover {
+    border-color: #2c2a26;
+}
+
+.room-builder__button.is-active {
+    border-color: #2c2a26;
+    background: #2c2a26;
+    color: #f6f1e7;
+}
+
+.room-builder__button--danger {
+    color: #9a3412;
+    border-color: #e4c4b4;
+}
+
+.room-builder__workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 16px;
+    align-items: start;
+}
+
+.room-builder__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.room-builder__tab {
+    padding: 5px 8px;
+    font-size: 0.78rem;
+}
+
+.room-builder__stage {
+    min-width: 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: #e6dfd2;
+}
+
+.room-builder__stage:focus {
+    outline: none;
+}
+
+.room-builder__stage:focus-visible {
+    outline: 2px solid #9a3412;
+    outline-offset: 3px;
+}
+
+.room-builder__plan {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #efe7da;
+    border-radius: 6px;
+    touch-action: none;
+    user-select: none;
+}
+
+.room-builder__floor {
+    fill: #f7f2e8;
+}
+
+.room-builder__grid line {
+    stroke: rgba(44, 42, 38, 0.14);
+    stroke-width: 0.02;
+}
+
+.room-builder__wall {
+    stroke: #2c2a26;
+    stroke-width: 0.16;
+    stroke-linecap: square;
+}
+
+.room-builder__wall-hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 0.9;
+    cursor: pointer;
+}
+
+.room-builder__wall-hit.is-selected {
+    stroke: #9a3412;
+    stroke-width: 0.28;
+}
+
+.room-builder__wall-label {
+    fill: #3f3a34;
+    font-family: Georgia, "Iowan Old Style", Palatino, serif;
+    cursor: pointer;
+}
+
+.room-builder__wall-end {
+    fill: #fffdf9;
+    stroke: #9a3412;
+    stroke-width: 0.08;
+}
+
+.room-builder__wall-tray {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.room-builder__wall-pieces {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.room-builder__wall-piece {
+    justify-content: center;
+    white-space: nowrap;
+    font-weight: 650;
+}
+
+.room-builder__jog {
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.room-builder__door {
+    fill: none;
+    stroke: #6d6458;
+    stroke-width: 0.045;
+}
+
+.room-builder__door.is-selected {
+    stroke: #9a3412;
+    stroke-width: 0.07;
+}
+
+.room-builder__back {
+    stroke: rgba(44, 42, 38, 0.7);
+    stroke-linecap: round;
+}
+
+.room-builder__plan text {
+    fill: #5c564c;
+    font-family: Georgia, "Iowan Old Style", Palatino, serif;
+}
+
+.room-builder__plan [data-kind="item"] {
+    cursor: grab;
+}
+
+.room-builder__stage.is-door-tool .room-builder__plan {
+    cursor: crosshair;
+}
+
+.room-builder__stage.is-door-tool .room-builder__plan [data-kind="item"] {
+    cursor: grab;
+}
+
+.room-builder__side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.room-builder__hint,
+.room-builder__status {
+    margin: 0;
+    color: #5c564c;
+    font-size: 0.92rem;
+}
+
+.room-builder__status {
+    color: #9a3412;
+}
+
+.room-builder__selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.room-builder__selection p {
+    flex: 1 0 100%;
+    margin: 0;
+}
+
+.room-builder__selection .room-builder__field {
+    flex: 1 1 auto;
+}
+
+.room-builder__palette {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 460px;
+    overflow: auto;
+}
+
+.room-builder__piece {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px;
+    text-align: left;
+    touch-action: none;
+    cursor: grab;
+}
+
+.room-builder__swatch {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 28px;
+    border: 1px solid rgba(44, 42, 38, 0.25);
+    border-radius: 4px;
+}
+
+.room-builder__piece-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.room-builder__piece-name {
+    font-size: 0.92rem;
+}
+
+.room-builder__piece-size {
+    color: #6b645b;
+    font-size: 0.78rem;
+}
+
+.room-builder__ghost {
+    position: fixed;
+    z-index: 100000;
+    padding: 6px 10px;
+    border: 1px solid #2c2a26;
+    border-radius: 6px;
+    background: #fffdf9;
+    color: #2c2a26;
+    font-family: Georgia, "Iowan Old Style", Palatino, serif;
+    font-size: 14px;
+    pointer-events: none;
+    transform: translate(12px, 12px);
+}
+
+@media (max-width: 800px) {
+    .room-builder__workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .room-builder__palette {
+        max-height: 240px;
+    }
+}
+
+/*
+ * Full-screen layout. The page template and [room_builder layout="fullscreen"]
+ * both use this. The document stays put; the plan and catalog scroll inside it.
+ */
+html.room-builder-fullscreen,
+html.room-builder-fullscreen body {
+    overflow: hidden;
+}
+
+html.room-builder-fullscreen .wp-site-blocks {
+    display: none;
+}
+
+.room-builder--fullscreen {
+    position: fixed;
+    z-index: 99990;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 14px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.85), transparent 34%),
+        linear-gradient(165deg, #f7f8fa 0%, #e7eaf0 100%);
+}
+
+body.admin-bar ~ .room-builder--fullscreen {
+    top: 32px;
+    height: calc(100vh - 32px);
+    height: calc(100dvh - 32px);
+}
+
+.room-builder--fullscreen .room-builder__app {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(26, 28, 32, 0.12);
+}
+
+.room-builder--fullscreen .room-builder__shapes,
+.room-builder--fullscreen .room-builder__toolbar {
+    flex: 0 0 auto;
+}
+
+.room-builder--fullscreen .room-builder__workspace {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: stretch;
+    grid-template-rows: minmax(0, 1fr);
+}
+
+.room-builder--fullscreen .room-builder__stage {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+.room-builder--fullscreen .room-builder__plan {
+    width: 100%;
+    height: 100%;
+}
+
+.room-builder--fullscreen .room-builder__side {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.room-builder--fullscreen .room-builder__palette {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar ~ .room-builder--fullscreen {
+        top: 46px;
+        height: calc(100vh - 46px);
+        height: calc(100dvh - 46px);
+    }
+}
+
+@media (max-width: 800px) {
+    .room-builder--fullscreen {
+        padding: 0;
+    }
+
+    .room-builder--fullscreen .room-builder__app {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .room-builder--fullscreen .room-builder__workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(160px, 42%);
+    }
+
+    .room-builder--fullscreen .room-builder__palette {
+        max-height: none;
+    }
+}
