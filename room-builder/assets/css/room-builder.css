@@ -1,0 +1,770 @@
+.room-builder {
+    --ink: #1c2430;
+    --accent: #0f766e;
+    --coral: #e36a4a;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 1.5rem 0;
+    padding: 12px;
+    border-radius: 22px;
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(227, 106, 74, 0.28), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(15, 118, 110, 0.24), transparent 32%),
+        radial-gradient(circle at 80% 100%, rgba(91, 111, 214, 0.2), transparent 36%),
+        #eef3f8;
+}
+
+.room-builder *,
+.room-builder *::before,
+.room-builder *::after {
+    box-sizing: inherit;
+}
+
+.room-builder__fallback {
+    margin: 0;
+    color: #667085;
+}
+
+.room-builder__app {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(28, 36, 48, 0.08);
+}
+
+.room-builder__toolbar,
+.room-builder__shapes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.room-builder__shapes-label {
+    color: #3d4a5c;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.room-builder h2,
+.room-builder h3 {
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-weight: 650;
+    letter-spacing: 0;
+}
+
+.room-builder h2 {
+    margin-right: 6px;
+    font-size: 1.25rem;
+    line-height: 1.2;
+}
+
+.room-builder h2::before {
+    content: "";
+    display: inline-block;
+    width: 0.72rem;
+    height: 0.72rem;
+    margin-right: 0.45rem;
+    border-radius: 0.22rem;
+    background: linear-gradient(135deg, #e36a4a 0%, #f2b84b 48%, #0f766e 100%);
+    vertical-align: -1px;
+}
+
+.room-builder h3 {
+    font-size: 0.95rem;
+}
+
+.room-builder__field {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #3d4a5c;
+    font-size: 0.92rem;
+}
+
+.room-builder input[type="number"] {
+    width: 4.6rem;
+    margin: 0;
+    padding: 6px 8px;
+    border: 1px solid #d5deea;
+    border-radius: 10px;
+    background: #f7f9fc;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.room-builder__button,
+.room-builder__piece {
+    margin: 0;
+    border: 1px solid #d5deea;
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.room-builder__button {
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-weight: 650;
+}
+
+.room-builder__button:hover,
+.room-builder__piece:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.room-builder__button.is-active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+}
+
+.room-builder__button--danger {
+    color: var(--coral);
+    border-color: #f3c2b4;
+    background: #fff6f3;
+}
+
+.room-builder__button--primary {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+}
+
+.room-builder__button--primary:hover,
+.room-builder__button--primary:focus-visible {
+    border-color: #0c615b;
+    background: #0c615b;
+    color: #fff;
+}
+
+.room-builder__button:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.room-builder__account {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.room-builder__account-name,
+.room-builder__account-status {
+    color: #3d4a5c;
+    font-size: 0.88rem;
+    font-weight: 650;
+}
+
+.room-builder__account-status {
+    color: var(--accent);
+}
+
+.room-builder__account-status.is-alert {
+    color: var(--coral);
+}
+
+.room-builder__modal {
+    position: fixed;
+    z-index: 100000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(28, 36, 48, 0.38);
+}
+
+.room-builder__modal[hidden] {
+    display: none;
+}
+
+.room-builder__dialog {
+    width: min(440px, 100%);
+    max-height: min(82vh, 680px);
+    overflow: auto;
+    padding: 22px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(28, 36, 48, 0.2);
+}
+
+.room-builder__dialog p {
+    margin: 0 0 12px;
+    color: #3d4a5c;
+}
+
+.room-builder__dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.room-builder__auth-switch,
+.room-builder__dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.room-builder__dialog-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #3d4a5c;
+    font-size: 0.88rem;
+    font-weight: 650;
+}
+
+.room-builder__dialog input[type="text"],
+.room-builder__dialog input[type="email"],
+.room-builder__dialog input[type="password"] {
+    width: 100%;
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid #d5deea;
+    border-radius: 10px;
+    background: #f7f9fc;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.room-builder__form-error {
+    margin: 0;
+    color: var(--coral);
+    font-weight: 650;
+}
+
+.room-builder__rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 14px;
+}
+
+.room-builder__room-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #d5deea;
+    border-radius: 12px;
+    background: #f7f9fc;
+}
+
+.room-builder__room-row.is-current {
+    border-color: var(--accent);
+    background: #f3fbf9;
+}
+
+.room-builder__room-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.room-builder__room-title {
+    overflow: hidden;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.room-builder__room-date {
+    color: #5c6b7e;
+    font-size: 0.78rem;
+}
+
+.room-builder__workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 16px;
+    align-items: start;
+}
+
+.room-builder__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.room-builder__tab {
+    padding: 4px 7px;
+    font-size: 0.76rem;
+}
+
+.room-builder__stage {
+    min-width: 0;
+    padding: 14px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(227, 106, 74, 0.18), transparent 36%),
+        linear-gradient(165deg, #e5f4f1 0%, #d7ebe4 100%);
+}
+
+.room-builder__stage:focus {
+    outline: none;
+}
+
+.room-builder__stage:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.room-builder__plan {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: transparent;
+    border-radius: 12px;
+    touch-action: none;
+    user-select: none;
+}
+
+.room-builder__floor {
+    fill: #fbfffd;
+}
+
+.room-builder__grid line {
+    stroke: rgba(15, 118, 110, 0.2);
+    stroke-width: 0.025;
+}
+
+.room-builder__wall {
+    stroke: #16332f;
+    stroke-width: 0.18;
+    stroke-linecap: square;
+}
+
+.room-builder__wall-hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 0.9;
+    cursor: pointer;
+}
+
+.room-builder__wall-hit.is-selected {
+    stroke: var(--accent);
+    stroke-width: 0.28;
+}
+
+.room-builder__wall-label {
+    fill: #16332f;
+    font-family: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.room-builder__wall-end {
+    fill: #fff;
+    stroke: var(--accent);
+    stroke-width: 0.08;
+}
+
+.room-builder__rotate {
+    fill: #fff;
+    stroke: var(--accent);
+    stroke-width: 0.06;
+    cursor: pointer;
+}
+
+.room-builder__remove {
+    cursor: pointer;
+}
+
+.room-builder__remove circle {
+    fill: #fff;
+    stroke: var(--coral);
+    stroke-width: 0.06;
+}
+
+.room-builder__item-size text {
+    fill: var(--accent);
+    font-family: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    font-weight: 700;
+    stroke: #fff;
+    stroke-width: 0.09;
+    paint-order: stroke;
+}
+
+.room-builder__wall-tray {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.room-builder__wall-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.room-builder__wall-heading p {
+    margin: 0;
+}
+
+.room-builder__wall-pieces {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.room-builder__wall-piece {
+    justify-content: center;
+    white-space: nowrap;
+    font-weight: 650;
+}
+
+.room-builder__wall-piece--custom {
+    grid-column: 1 / -1;
+    width: 100%;
+    border-color: #9ed9cf;
+    background: #e7f6f3;
+    color: var(--accent);
+}
+
+.room-builder__wall-note {
+    margin: 0;
+    color: #3d6f68;
+    font-size: 0.82rem;
+    line-height: 1.3;
+}
+
+.room-builder__stage.is-wall-tool .room-builder__plan {
+    cursor: crosshair;
+}
+
+.room-builder__draw-preview line {
+    stroke: var(--accent);
+    stroke-width: 0.14;
+    stroke-linecap: square;
+}
+
+.room-builder__jog {
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.room-builder__door {
+    fill: none;
+    stroke: #3d6f68;
+    stroke-width: 0.045;
+}
+
+.room-builder__door.is-selected {
+    stroke: var(--accent);
+    stroke-width: 0.07;
+}
+
+.room-builder__back {
+    stroke: rgba(44, 42, 38, 0.7);
+    stroke-linecap: round;
+}
+
+.room-builder__plan text {
+    fill: #16332f;
+    font-family: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    font-weight: 650;
+}
+
+.room-builder__plan [data-kind="item"] {
+    cursor: grab;
+}
+
+.room-builder__stage.is-door-tool .room-builder__plan {
+    cursor: crosshair;
+}
+
+.room-builder__stage.is-door-tool .room-builder__plan [data-kind="item"] {
+    cursor: grab;
+}
+
+.room-builder__side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 16px;
+    background: #f5f8fc;
+}
+
+.room-builder__hint,
+.room-builder__status {
+    margin: 0;
+    color: #4b5b6e;
+    font-size: 0.92rem;
+}
+
+.room-builder__status {
+    color: var(--coral);
+}
+
+.room-builder__selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.room-builder__selection p {
+    flex: 1 0 100%;
+    margin: 0;
+}
+
+.room-builder__selection .room-builder__field {
+    flex: 1 1 auto;
+}
+
+.room-builder__palette {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 460px;
+    overflow: auto;
+}
+
+.room-builder__piece {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px;
+    text-align: left;
+    touch-action: none;
+    cursor: grab;
+}
+
+.room-builder__swatch {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 36px;
+    padding: 3px;
+    border: 1px solid #d5deea;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.room-builder__swatch svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.room-builder__piece-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.room-builder__piece-name {
+    font-size: 0.92rem;
+}
+
+.room-builder__piece-size {
+    color: #5c6b7e;
+    font-size: 0.78rem;
+}
+
+.room-builder__tab[data-room-tab="living"] { background: #fff1ea; border-color: #f3c2ae; color: #9a3412; }
+.room-builder__tab[data-room-tab="bedroom"] { background: #eef0ff; border-color: #c9cff8; color: #3d4cb5; }
+.room-builder__tab[data-room-tab="dining"] { background: #fff6df; border-color: #f0d48a; color: #8a5a00; }
+.room-builder__tab[data-room-tab="office"] { background: #e7f6f3; border-color: #9ed9cf; color: #0f766e; }
+.room-builder__tab[data-room-tab="bathroom"] { background: #e7f5fc; border-color: #a9d8f0; color: #1d6f99; }
+.room-builder__tab[data-room-tab="kitchen"] { background: #ffece8; border-color: #f4b8ac; color: #b42318; }
+.room-builder__tab[data-room-tab="nursery"] { background: #fdeef5; border-color: #f3c0d8; color: #a33b6d; }
+.room-builder__tab[data-room-tab="outdoor"] { background: #e8f7ec; border-color: #b4e0c0; color: #217a3a; }
+.room-builder__tab[data-room-tab="accessories"] { background: #f6eef9; border-color: #dcc4ea; color: #6d3d86; }
+.room-builder__tab[data-room-tab="laundry"] { background: #e7f7f8; border-color: #a9e0e4; color: #1a7480; }
+.room-builder__tab[data-room-tab="fitness"] { background: #fff1e6; border-color: #f5c7a4; color: #b45309; }
+.room-builder__tab[data-room-tab="games"] { background: #f0edff; border-color: #cfc6ff; color: #5340c7; }
+
+.room-builder__tab[data-room-tab="living"].is-active { background: #e36a4a; border-color: #e36a4a; color: #fff; }
+.room-builder__tab[data-room-tab="bedroom"].is-active { background: #5462d6; border-color: #5462d6; color: #fff; }
+.room-builder__tab[data-room-tab="dining"].is-active { background: #e0a106; border-color: #e0a106; color: #fff; }
+.room-builder__tab[data-room-tab="office"].is-active { background: #0f766e; border-color: #0f766e; color: #fff; }
+.room-builder__tab[data-room-tab="bathroom"].is-active { background: #2b93c9; border-color: #2b93c9; color: #fff; }
+.room-builder__tab[data-room-tab="kitchen"].is-active { background: #e25b4a; border-color: #e25b4a; color: #fff; }
+.room-builder__tab[data-room-tab="nursery"].is-active { background: #d46a9a; border-color: #d46a9a; color: #fff; }
+.room-builder__tab[data-room-tab="outdoor"].is-active { background: #2f9a4a; border-color: #2f9a4a; color: #fff; }
+.room-builder__tab[data-room-tab="accessories"].is-active { background: #8b5e9b; border-color: #8b5e9b; color: #fff; }
+.room-builder__tab[data-room-tab="laundry"].is-active { background: #1a8f9c; border-color: #1a8f9c; color: #fff; }
+.room-builder__tab[data-room-tab="fitness"].is-active { background: #e07a2f; border-color: #e07a2f; color: #fff; }
+.room-builder__tab[data-room-tab="games"].is-active { background: #6d5ef0; border-color: #6d5ef0; color: #fff; }
+
+.room-builder__palette[data-room="living"] .room-builder__swatch { background: #fff6f1; border-color: #e36a4a; }
+.room-builder__palette[data-room="bedroom"] .room-builder__swatch { background: #f4f6ff; border-color: #5462d6; }
+.room-builder__palette[data-room="dining"] .room-builder__swatch { background: #fff9ec; border-color: #e0a106; }
+.room-builder__palette[data-room="office"] .room-builder__swatch { background: #f1fbf8; border-color: #0f766e; }
+.room-builder__palette[data-room="bathroom"] .room-builder__swatch { background: #f2faff; border-color: #2b93c9; }
+.room-builder__palette[data-room="kitchen"] .room-builder__swatch { background: #fff4f1; border-color: #e25b4a; }
+.room-builder__palette[data-room="nursery"] .room-builder__swatch { background: #fff5fa; border-color: #d46a9a; }
+.room-builder__palette[data-room="outdoor"] .room-builder__swatch { background: #f3fbf5; border-color: #2f9a4a; }
+.room-builder__palette[data-room="accessories"] .room-builder__swatch { background: #faf5fc; border-color: #8b5e9b; }
+.room-builder__palette[data-room="laundry"] .room-builder__swatch { background: #f2fcfd; border-color: #1a8f9c; }
+.room-builder__palette[data-room="fitness"] .room-builder__swatch { background: #fff7f0; border-color: #e07a2f; }
+.room-builder__palette[data-room="games"] .room-builder__swatch { background: #f6f5ff; border-color: #6d5ef0; }
+
+.room-builder__ghost {
+    position: fixed;
+    z-index: 100000;
+    padding: 6px 10px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 650;
+    pointer-events: none;
+    transform: translate(12px, 12px);
+    box-shadow: 0 8px 20px rgba(28, 36, 48, 0.12);
+}
+
+@media (max-width: 800px) {
+    .room-builder__workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .room-builder__palette {
+        max-height: 240px;
+    }
+}
+
+/*
+ * Full-screen layout. The page template and [room_builder layout="fullscreen"]
+ * both use this. The document stays put; the plan and catalog scroll inside it.
+ */
+html.room-builder-fullscreen,
+html.room-builder-fullscreen body {
+    overflow: hidden;
+}
+
+html.room-builder-fullscreen .wp-site-blocks {
+    display: none;
+}
+
+.room-builder--fullscreen {
+    position: fixed;
+    z-index: 99990;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 14px;
+    overflow: hidden;
+    border-radius: 0;
+    background:
+        radial-gradient(circle at 0% 0%, rgba(227, 106, 74, 0.34), transparent 28%),
+        radial-gradient(circle at 100% 8%, rgba(15, 118, 110, 0.3), transparent 32%),
+        radial-gradient(circle at 78% 100%, rgba(109, 94, 240, 0.24), transparent 36%),
+        #e7eef6;
+}
+
+body.admin-bar ~ .room-builder--fullscreen {
+    top: 32px;
+    height: calc(100vh - 32px);
+    height: calc(100dvh - 32px);
+}
+
+.room-builder--fullscreen .room-builder__app {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(26, 28, 32, 0.12);
+}
+
+.room-builder--fullscreen .room-builder__shapes,
+.room-builder--fullscreen .room-builder__toolbar {
+    flex: 0 0 auto;
+}
+
+.room-builder--fullscreen .room-builder__workspace {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: stretch;
+    grid-template-rows: minmax(0, 1fr);
+}
+
+.room-builder--fullscreen .room-builder__stage {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+.room-builder--fullscreen .room-builder__plan {
+    width: 100%;
+    height: 100%;
+}
+
+.room-builder--fullscreen .room-builder__side {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.room-builder--fullscreen .room-builder__palette {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar ~ .room-builder--fullscreen {
+        top: 46px;
+        height: calc(100vh - 46px);
+        height: calc(100dvh - 46px);
+    }
+}
+
+@media (max-width: 800px) {
+    .room-builder--fullscreen {
+        padding: 0;
+    }
+
+    .room-builder--fullscreen .room-builder__app {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .room-builder--fullscreen .room-builder__workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(160px, 42%);
+    }
+
+    .room-builder--fullscreen .room-builder__palette {
+        max-height: none;
+    }
+}
